@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta property="og:image" content="/assets/hamsterkraft_logo.png"> <title> TL-WR841 RAM/ROM Upgrade · Hamsterkraft </title> <link rel="stylesheet" href="TL-WR841%20RAM_ROM%20Upgrade%20%C2%B7%20Hamsterkraft_pliki/styles.css"> <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://hamsterkraft.de/assets/apple-touch-icon-precomposed.png"> <link rel="shortcut icon" href="https://hamsterkraft.de/assets/favicon.ico"> <link rel="alternate" type="application/atom+xml" title="Hamsterkraft" href="https://hamsterkraft.de/feed.xml"> <!-- Begin Jekyll SEO tag v2.6.1 --> <meta name="generator" content="Jekyll v4.1.1"> <meta property="og:title" content="TL-WR841 RAM/ROM Upgrade"> <meta name="author" content="psychowoife"> <meta property="og:locale" content="en_US"> <meta name="description" content="(Tutorial for TP-Link TL-WR841N(D) v8,v9,v10,v11,v12)"> <meta property="og:description" content="(Tutorial for TP-Link TL-WR841N(D) v8,v9,v10,v11,v12)"> <link rel="canonical" href="http://localhost:4000/hardware/2020/08/TP-Link_TL-WR841_RAM_ROM.html"> <meta property="og:url" content="http://localhost:4000/hardware/2020/08/TP-Link_TL-WR841_RAM_ROM.html"> <meta property="og:site_name" content="Hamsterkraft"> <meta property="og:type" content="article"> <meta property="article:published_time" content="2020-08-24T00:00:00+02:00"> <script type="application/ld+json"> {"datePublished":"2020-08-24T00:00:00+02:00","description":"(Tutorial for TP-Link TL-WR841N(D) v8,v9,v10,v11,v12)","dateModified":"2020-08-24T00:00:00+02:00","url":"http://localhost:4000/hardware/2020/08/TP-Link_TL-WR841_RAM_ROM.html","@type":"BlogPosting","author":{"@type":"Person","name":"psychowoife"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/hardware/2020/08/TP-Link_TL-WR841_RAM_ROM.html"},"headline":"TL-WR841 RAM/ROM Upgrade","@context":"https://schema.org"}</script> <!-- End Jekyll SEO tag --> </head> <body> <div class="container content"> <header class="masthead"> <h3 class="masthead-title"> <a href="https://hamsterkraft.de/" title="Home">Hamsterkraft</a><br> <small>follow on your own risk</small> </h3> <!-- Change navigation links here --> <div class="navigation"> <ul id="navigation-list"> <li><a href="https://hamsterkraft.de/archive/">archive</a></li> <li><a href="https://hamsterkraft.de/tags/">tags</a></li> <li><a href="https://hamsterkraft.de/categories/">categories</a></li> <!-- <li><a href="/styles/">styles</a></li> --> </ul> </div> </header> <main> <article class="post"> <h1 class="post-title">TL-WR841 RAM/ROM Upgrade</h1> <time datetime="2020-08-24T00:00:00+02:00" class="post-date">August 24th, 2020 in <a href="https://hamsterkraft.de/categories/#hardware">hardware</a> <br><i>Last updated on: August 24th, 2020</i></time> <p>(Tutorial for TP-Link TL-WR841N(D) v8,v9,v10,v11,v12)</p> <p>With
+ the next release of OpenWRT (&gt;19.07.3) no images for devices only 
+containing 4Mbyte flash and 32Mbyte RAM will be build. So devices like 
+the TP-Link TL-WR841N will get no future images. But luckily the popular
+ TP-Link TL-WR841N can be fairly easily upgraded, provided one is able 
+to solder smd components, and building your own image is no magic.</p> <p>Starting with 19.07.0 OpenWRT switched TL-WR841N from target <em>ar71xx</em> into the new <em>ath79</em>
+ target. Due to Flash size limitation all pre-build images do not 
+contain a webinterface. To make flashing easier after switching to a new
+ ROM chip, we will initially use a 18.0x.x build with included 
+webinterface. After building our own fresh image including a 
+webinterface and a more recent linux kernel we can flash it with no 
+problems afterwards.</p> <p>The most difficult part is the RAM upgrade, 
+because the TSOP-II 66pin chip is not the easiest to desolder. I’ve done
+ my swap with the help of a hot-air station. This step may be optional 
+but without, OpenWRT will easily run out ouf RAM and you may be very 
+limited functionality wise.</p> <p>Swapping the ROM chip is not to 
+difficult. A hot-air station may make the process a breeze, but using 
+only a soldering iron is barely harder.</p> <p>Helpful tools for soldering are a pair of small tweezers, solder, flux, and solder-wick.</p> <h1 id="prequisites"><small><strong>Prequisites:</strong></small></h1> <table> <tbody> <tr> <td>64Mbyte RAM chip -&gt; optional but recommended</td> </tr> <tr> <td>8/16Mbyte flash chip</td> </tr> <tr> <td>flash programmer</td> </tr> <tr> <td>Linux (Windows possible by using cygwin)</td> </tr> </tbody> </table> <p>for possible RAM and ROM chips look at the bottom tables.</p> <p>to
+ read the old flash chip and write the new one, a flash programmer is 
+needed. I used the TL866CS MiniPro. There are plenty of options for 
+flash programmer, like the CH341A (popular for BIOS flashing) and you 
+can easily use a raspberry pi (just search for raspberry pi SPI 
+flasher).</p> <p class="orange"><span class="closebtn" onclick="this.parentElement.style.display='none';">×</span><small><b>Warning!</b>
+ Doing upgrades step by step, will help troubleshooting in case of 
+problems. Do either ROM or RAM first and check before progressing</small></p> <h1 id="open-device"><small><strong>Open Device</strong></small></h1> <figure> <a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/open_00.png"> <img src="TL-WR841%20RAM_ROM%20Upgrade%20%C2%B7%20Hamsterkraft_pliki/open_00_small.png" alt="open_00"> </a> <figcaption>remove screws under both foots</figcaption> </figure> <figure> <a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/open_01.png"> <img src="TL-WR841%20RAM_ROM%20Upgrade%20%C2%B7%20Hamsterkraft_pliki/open_01_small.png" alt="open_01"> </a> <figcaption>use plastic spudger to open clips</figcaption> </figure> <figure> <a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/open_02.png"> <img src="TL-WR841%20RAM_ROM%20Upgrade%20%C2%B7%20Hamsterkraft_pliki/open_02_small.png" alt="open_02"> </a> <figcaption>clip on bottom side</figcaption> </figure> <figure> <a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/open_03.png"> <img src="TL-WR841%20RAM_ROM%20Upgrade%20%C2%B7%20Hamsterkraft_pliki/open_03_small.png" alt="open_03"> </a> <figcaption>clip on top side</figcaption> </figure> <figure> <a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/board_overview.png"> <img src="TL-WR841%20RAM_ROM%20Upgrade%20%C2%B7%20Hamsterkraft_pliki/board_overview_small.png" alt="board_overview"> </a> <figcaption>PCB v11 (v12 looks identical)</figcaption> </figure> <h1 id="ram"><small><strong>RAM</strong></small></h1> <p>to upgrade RAM only swapping of the RAM chip has to be done.</p> <p class="red"><span class="closebtn" onclick="this.parentElement.style.display='none';">×</span><small><b>Warning!</b>
+ Be careful to not knock of any small components around the RAM chip or 
+damage any traces or pads. Doing so will most probably render your 
+device inoperable. </small></p> <figure> <a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/RAM.png"> <img src="TL-WR841%20RAM_ROM%20Upgrade%20%C2%B7%20Hamsterkraft_pliki/RAM_small.png" alt="RAM"> </a> <figcaption>original 32M RAM</figcaption> </figure> <p>the
+ best method (in my opinion) to remove the old chip, is by using a 
+hot-air station with flux. But if you don’t care about the old RAM chip 
+surviving you can take a box cutting knife and carefully cut off the 
+legs as close as possible to the chip. Do not cut into the PCB by doing 
+so. The remaining legs on the board can be removed with a normal 
+solderin iron one by one.</p> <p>After the chip is removed, use some flux and solder wick to clean of the solder pads.</p> <figure> <a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/newRAM.png"> <img src="TL-WR841%20RAM_ROM%20Upgrade%20%C2%B7%20Hamsterkraft_pliki/newRAM_small.png" alt="newRAM"> </a> <figcaption>new 64M RAM</figcaption> </figure> <p>Place
+ the new RAM chip in the right orientation (white mark on board 
+corresponds to indent on chip) on the pads. First only solder one of the
+ corner legs to align and stabilize the chip. Next solder the corner on 
+the opposite site before you can solder the rest.</p> <p>If all went 
+good the new RAM will be automaticly detected by the Processor and the 
+device will start just fine. It can also be checked on the Overview in 
+luci webinterface or via ssh.</p> <figure> <a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/memory.png"> <img src="TL-WR841%20RAM_ROM%20Upgrade%20%C2%B7%20Hamsterkraft_pliki/memory.png" alt="64M Memory"> </a> <figcaption>working 64M Memory</figcaption> </figure> <h1 id="rom"><small><strong>ROM</strong></small></h1> <p>As
+ the first step we need a dump of the original ROM to extract the 
+ART-partition (Atheros Radio Test). Without this the wireless will not 
+work.</p> <figure> <a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/ROM.png"> <img src="TL-WR841%20RAM_ROM%20Upgrade%20%C2%B7%20Hamsterkraft_pliki/ROM_small.png" alt="ROM"> </a> <figcaption>4M flash ROM (25Q32CS)</figcaption> </figure> <p>To
+ dump the rom, remove the chip and put it in a flash programmer. Due to 
+the necessity of flash programmer for writing new chip anyway, dumping 
+through ssh when OpenWRT is already running on device is not scope of 
+this tutorial.</p> <figure> <a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/tl866.png"> <img src="TL-WR841%20RAM_ROM%20Upgrade%20%C2%B7%20Hamsterkraft_pliki/tl866_small.png" alt="TL866CS"> </a> <figcaption>TL866CS Programmer with SOP8 adapter</figcaption> </figure> <figure> <a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/clamp.png"> <img src="TL-WR841%20RAM_ROM%20Upgrade%20%C2%B7%20Hamsterkraft_pliki/clamp_small.png" alt="SOP8_Clamp"> </a> <figcaption>clamp for SOP8 chips</figcaption> </figure> <figure> <a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/ch341a.png"> <img src="TL-WR841%20RAM_ROM%20Upgrade%20%C2%B7%20Hamsterkraft_pliki/ch341a_small.png" alt="ch341a"> </a> <figcaption>CH341A programmer</figcaption> </figure> <p>Also a raspberry pi can be used as a SPI flash programmer needing basicly only a couple wires.</p> <table> <thead> <tr> <th style="text-align: left">Flash ROM</th> <th style="text-align: left">Raspberry Pi</th> </tr> </thead> <tbody> <tr> <td style="text-align: left">!SS (1)</td> <td style="text-align: left">GPIO8 (SPI0_CED_N)</td> </tr> <tr> <td style="text-align: left">MISO (2)</td> <td style="text-align: left">GPIO9 (SPI0_MISO</td> </tr> <tr> <td style="text-align: left">!WP (3)</td> <td style="text-align: left">3V3</td> </tr> <tr> <td style="text-align: left">GND (4)</td> <td style="text-align: left">GND</td> </tr> <tr> <td style="text-align: left">MOSI (5)</td> <td style="text-align: left">GPIO10 (SPI0_MOSI)</td> </tr> <tr> <td style="text-align: left">SCK (6)</td> <td style="text-align: left">GPIO11 (SPI0_SCLK)</td> </tr> <tr> <td style="text-align: left">!HOLD (8)</td> <td style="text-align: left">3V3</td> </tr> <tr> <td style="text-align: left">VDD (8)</td> <td style="text-align: left">3V3</td> </tr> </tbody> </table> <p class="blue"><span class="closebtn" onclick="this.parentElement.style.display='none';">×</span><small><b>Information:</b> This tutorial does not show how to use a specific programmer. Focus lies on TL-WR841N specific parts. </small></p> <h1 id="create-new-flash-image"><small>Create new flash image</small></h1> <p>By
+ just copying the old ROM to a bigger flash chip won’t work because of 
+the partition layout needed for booting the device. The ART-partition 
+has to be at the end of the flash rom and by simply copying it would end
+ up somewhere in the middle. So the first step is to extract this 
+partition. Also the original firmware will not work anymore.</p> <p>To prevent an unbootable device we also change the bootloader to <a href="https://github.com/pepe2k/u-boot_mod" target="_blank" rel="noopener noreferrer">u-boot-mod</a> to get best compatability with a range of flash chips and very good firmware recovery options.</p> <p class="message"><span class="closebtn" onclick="this.parentElement.style.display='none';">×</span><small><b></b> Independent of the method used, a ROM dump of 4M size should be extracted. This will be refered to 'dump.bin' from here on.</small></p> <p>the last 64 Kbyte of the dump contains the ART-partition. to extract it:</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">dd </span><span class="nv">ibs</span><span class="o">=</span>4k <span class="nv">skip</span><span class="o">=</span>1008 <span class="k">if</span><span class="o">=</span>dump.bin <span class="nv">of</span><span class="o">=</span>art.bin</code></pre></figure> <p>create an zero filled dummy out.bin file with the size of the new flash chip</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">dd </span><span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">ibs</span><span class="o">=</span>4k <span class="nv">count</span><span class="o">=</span>4096 | <span class="nb">tr</span> <span class="s2">"</span><span class="se">\0</span><span class="s2">00"</span> <span class="s2">"</span><span class="se">\3</span><span class="s2">77"</span> <span class="o">&gt;</span> out.bin
+<span class="c">#for 8MB chips use 2048 instead of 4096</span></code></pre></figure> <p>copy ART-partition to the end of out.bin</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">dd </span><span class="nv">conv</span><span class="o">=</span>notrunc <span class="nv">obs</span><span class="o">=</span>4k <span class="nv">seek</span><span class="o">=</span>4080 <span class="k">if</span><span class="o">=</span>art.bin <span class="nv">of</span><span class="o">=</span>out.bin
+<span class="c">#for 8MB chips use 2032 instead of 4080</span></code></pre></figure> <p>download <a href="https://hamsterkraft.de/DO_NOT_DELETE/jenkins/uboot">bootloader</a> version for your device (for v12 use v11 uboot) and copy it to the beginning of out.bin</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">dd </span><span class="nv">conv</span><span class="o">=</span>notrunc <span class="k">if</span><span class="o">=</span>tp-link-tl-wr841n-vVERSION.bin <span class="nv">of</span><span class="o">=</span>out.bin
+<span class="c">#replace VERSION with your device version</span></code></pre></figure> <p>download <a href="https://downloads.openwrt.org/releases/18.06.8/targets/ar71xx/tiny/" target="_blank" rel="noopener noreferrer">OpenWRT image</a>
+ for your device (tl-wr841-vVERSION-squashfs-sysupgrade.bin). Every 
+release version &lt;19.0x.x will suffice as we will upgrade to newer 
+ath79 target image later. Afterwards we copy it into the out.bin behind 
+the bootloader.</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">dd </span><span class="nv">conv</span><span class="o">=</span>notrunc <span class="nv">obs</span><span class="o">=</span>4k <span class="nv">seek</span><span class="o">=</span>32 <span class="k">if</span><span class="o">=</span>tl-wr841-vVERSION-squashfs-sysupgrade.bin <span class="nv">of</span><span class="o">=</span>out.bin
+<span class="c">#replace VERSION with your device version</span></code></pre></figure> <p>for proper operation the MAC address and version string has to be written inside the image.</p> <p class="yellow"><span class="closebtn" onclick="this.parentElement.style.display='none';">×</span><small><b>Warning!</b> Not setting the correct version string will lead to problems with flashing firmware later on</small></p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">printf</span> <span class="s1">'\xAA\xBB\xCC\xDD\xEE\xFF'</span> | <span class="nb">dd </span><span class="nv">conv</span><span class="o">=</span>notrunc <span class="nv">ibs</span><span class="o">=</span>1 <span class="nv">obs</span><span class="o">=</span>256 <span class="nv">seek</span><span class="o">=</span>508 <span class="nv">count</span><span class="o">=</span>6 <span class="nv">of</span><span class="o">=</span>out.bin
+<span class="c">#replace AA BB CC DD EE FF with MAC address on bottom label of device</span>
+<span class="nb">printf</span> <span class="s1">'\x08\x41\x00\xVERSION\x00\x00\x00\x01'</span> | <span class="nb">dd </span><span class="nv">conv</span><span class="o">=</span>notrunc <span class="nv">ibs</span><span class="o">=</span>1 <span class="nv">obs</span><span class="o">=</span>256 <span class="nv">seek</span><span class="o">=</span>509 <span class="nv">count</span><span class="o">=</span>8 <span class="nv">of</span><span class="o">=</span>out.bin
+<span class="c">#replace VERSION with your device version written with leading 0 if only one letter (e.g. \xVERSION -&gt; \x09 for v9)</span></code></pre></figure> <p>now
+ the out.bin image is ready to be flashed to the new chip. Afterwards it
+ can be soldered in place of the old chip and the device is ready to be 
+booted.</p> <h1 id="pre-builtd-images"><small>Pre-builtd images</small></h1> <p class="blue"><span class="closebtn" onclick="this.parentElement.style.display='none';">×</span><small><b></b> pre-built images for 16M v11 and v12 can be found in the following link</small></p> <p><a href="https://hamsterkraft.de/DO_NOT_DELETE/jenkins/owrt">16M_builds</a></p> <h1 id="building-newest-version-with-webinterface"><small>Building newest version with webinterface</small></h1> <p>for dependencies necessary to build own image refer to official <a href="https://openwrt.org/docs/guide-developer/build-system/install-buildsystem#examples_of_package_installations" target="_blank" rel="noopener noreferrer">site</a></p> <p>following steps should NOT be done as ‘root’ or with ‘sudo’</p> <p>clone OpenWRT git repository</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">git clone https://git.openwrt.org/openwrt/openwrt.git openwrt</code></pre></figure> <p>change into the openwrt directory</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">cd </span>openwrt</code></pre></figure> <p>update and install feeds (e.g. needed for luci webinterface)</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">./scripts/feeds update <span class="nt">-a</span>
+./scripts/feeds <span class="nb">install</span> <span class="nt">-a</span></code></pre></figure> <p>at this point an adjustment to some source files is necessary to build an image using the new flash size. edit following files:</p> <p><em>target/linux/ath79/dts/qca9533_tplink_tl-wr841.dtsi</em></p> <p>in this part the addresses must be adjusted for 8/16M flash size</p> <figure class="highlight"><pre><code class="language-plaintext" data-lang="plaintext">flash@0 {
+		compatible = "jedec,spi-nor";
+		reg = &lt;0&gt;;
+		spi-max-frequency = &lt;25000000&gt;;
+
+		partitions {
+			compatible = "fixed-partitions";
+			#address-cells = &lt;1&gt;;
+			#size-cells = &lt;1&gt;;
+
+			uboot: partition@0 {
+				label = "u-boot";
+				reg = &lt;0x000000 0x020000&gt;;
+				read-only;
+			};
+
+			partition@20000 {
+				compatible = "tplink,firmware";
+				label = "firmware";
+				reg = &lt;0x020000 0x3d0000&gt;;
+			};
+
+			art: partition@3f0000 {
+				label = "art";
+				reg = &lt;0x3f0000 0x010000&gt;;
+				read-only;
+			};
+		};</code></pre></figure> <p>here are the finished changes</p> <figure class="highlight"><pre><code class="language-plaintext" data-lang="plaintext">flash@0 {
+		compatible = "jedec,spi-nor";
+		reg = &lt;0&gt;;
+		spi-max-frequency = &lt;25000000&gt;;
+
+		partitions {
+			compatible = "fixed-partitions";
+			#address-cells = &lt;1&gt;;
+			#size-cells = &lt;1&gt;;
+
+			uboot: partition@0 {
+				label = "u-boot";
+				reg = &lt;0x000000 0x020000&gt;;
+				read-only;
+			};
+
+			partition@20000 {
+				compatible = "tplink,firmware";
+				label = "firmware";
+				reg = &lt;0x020000 0xfd0000&gt;; //for 8M use 0xfa0000 instead of 0xfd0000
+			};
+
+			art: partition@ff0000 {       //for 8M use fc0000 instead of ff0000
+				label = "art";
+				reg = &lt;0xff0000 0x010000&gt;; //for 8M use 0xfc0000 instead of 0xff0000
+				read-only;
+			};
+		};</code></pre></figure> <p><em>target/linux/ath79/image/tiny-tp-link.mk</em></p> <p>find
+ your tplink-tl-wr841-vXX version and alter 4mlzma for the new flash 
+size. example shows passage for TL-WR841 v11. This looks similar for all
+ other versions.</p> <figure class="highlight"><pre><code class="language-plaintext" data-lang="plaintext">define Device/tplink_tl-wr841-v11
+  $(Device/tplink-4mlzma)
+  SOC := qca9533
+  DEVICE_MODEL := TL-WR841N/ND
+  DEVICE_VARIANT := v11
+  TPLINK_HWID := 0x08410011
+  SUPPORTED_DEVICES += tl-wr841n-v11
+  IMAGES += factory-us.bin factory-eu.bin
+  IMAGE/factory-us.bin := tplink-v1-image factory -C US
+  IMAGE/factory-eu.bin := tplink-v1-image factory -C EU
+endef
+TARGET_DEVICES += tplink_tl-wr841-v11</code></pre></figure> <p>in this 
+example the necessary change made to TL-WR841 v11 is shown, but it’s 
+basically the same for all other versions, just alter there description 
+part of the file.</p> <figure class="highlight"><pre><code class="language-plaintext" data-lang="plaintext">define Device/tplink_tl-wr841-v11
+  $(Device/tplink-16mlzma)    //for 8M use tplink-8mlzma instead of tplink-16mlzma
+  SOC := qca9533
+  DEVICE_MODEL := TL-WR841N/ND
+  DEVICE_VARIANT := v11
+  TPLINK_HWID := 0x08410011
+  SUPPORTED_DEVICES += tl-wr841n-v11
+  IMAGES += factory-us.bin factory-eu.bin
+  IMAGE/factory-us.bin := tplink-v1-image factory -C US
+  IMAGE/factory-eu.bin := tplink-v1-image factory -C EU
+endef
+TARGET_DEVICES += tplink_tl-wr841-v11</code></pre></figure> <p>at the next step we will configure the build script to build a image for our device</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">make menuconfig</code></pre></figure> <table> <tbody> <tr> <td>‘Target System’ -&gt; ‘Atheros ATH79 (DTS)</td> </tr> <tr> <td>‘Subtarget’ -&gt; ‘Devices with small flash’</td> </tr> <tr> <td>‘Target Profile’ -&gt; ‘TP-Link TL-WR841N/ND vVERSION’ (choose your device VERSION here)</td> </tr> <tr> <td>‘LuCI’ -&gt; ‘Collections’ -&gt; &lt;*&gt; ‘luci’ (make sure to mark with * not with M)</td> </tr> </tbody> </table> <figure> <a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/menuconfig_00.png"> <img src="TL-WR841%20RAM_ROM%20Upgrade%20%C2%B7%20Hamsterkraft_pliki/menuconfig_00.png" alt="Target"> </a> <figcaption>choose right target</figcaption> </figure> <figure> <a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/menuconfig_01.png"> <img src="TL-WR841%20RAM_ROM%20Upgrade%20%C2%B7%20Hamsterkraft_pliki/menuconfig_01.png" alt="LuCI"> </a> <figcaption>activate LuCI webinterface</figcaption> </figure> <p>afterwards choose exit and save when you are asked</p> <p>let the build system download all missing files</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">make download</code></pre></figure> <p>start build</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">make</code></pre></figure> <p>the finished image will be in following folder <em>bin/targets/ath79/tiny/</em></p> <p>this can now be flashed via the webinterface</p> <p class="orange"><span class="closebtn" onclick="this.parentElement.style.display='none';">×</span><small><b>Warning!</b>
+ Settings can NOT be kept because of the switch from *ar71xx* to 
+*ath79*. Keeping the settings will lead to a boot loop and a recovery 
+method will be necessary</small></p> <figure> <a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/system.png"> <img src="TL-WR841%20RAM_ROM%20Upgrade%20%C2%B7%20Hamsterkraft_pliki/system.png" alt="ath79 build"> </a> <figcaption>working new image</figcaption> </figure> <figure> <a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/software.png"> <img src="TL-WR841%20RAM_ROM%20Upgrade%20%C2%B7%20Hamsterkraft_pliki/software.png" alt="free space"> </a> <figcaption>over 11MByte free space</figcaption> </figure> <h1 id="recovey-method-with-new-uboot"><small>Recovey method with new uboot</small></h1> <p>by
+ holding the reset button for 3-4sec after powering on the device, it 
+will start a recovery webinterface with the IP: 192.168.1.1</p> <h1 id="possible-chips"><small>Possible chips</small></h1> <p>This list only shows examples and is by no means exhaustive. All similar chips, meeting the specifications should work.</p> <p><strong>RAM (64MByte/512MBit DDR1 32Mx16 TSOP-II 66pin)</strong></p> <table> <tbody> <tr> <td>
+<a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/HYSCS02382-1.pdf">Hynix HY5DU121622CTP-D43</a> -&gt; <em>used in this tutorial</em>
+</td> </tr> <tr> <td>Samsung K4H511638B-TCB3</td> </tr> <tr> <td>Samsung K4H511638D-UCB3</td> </tr> <tr> <td>Elpida D5116AFTA-5B-E</td> </tr> </tbody> </table> <p><strong>ROM (3/3.3V 128/64MBit Serial Flash SOIC8)</strong></p> <table> <tbody> <tr> <td>Winbond W25Q64 (8MB)</td> </tr> <tr> <td>
+<a href="https://hamsterkraft.de/assets/tl_wr841_upgrade/w25q128fv.pdf">Winbond W25Q128 (16MB)</a> -&gt; <em>used in this tutorial</em>
+</td> </tr> <tr> <td>Spansion S25FL064P (8MB)</td> </tr> <tr> <td>Spansion S25FL127S (16MB)</td> </tr> </tbody> </table> <h1 id="downloads"><small><strong>Downloads:</strong></small></h1> <table> <tbody> <tr> <td><a href="https://hamsterkraft.de/DO_NOT_DELETE/jenkins/owrt">16M_builds</a></td> </tr> <tr> <td><a href="https://hamsterkraft.de/DO_NOT_DELETE/jenkins/uboot">bootloader</a></td> </tr> <tr> <td><a href="https://downloads.openwrt.org/releases/18.06.8/targets/ar71xx/tiny/" target="_blank" rel="noopener noreferrer">OpenWRT image</a></td> </tr> <tr> <td><a href="https://github.com/pepe2k/u-boot_mod" target="_blank" rel="noopener noreferrer">u-boot-mod</a></td> </tr> </tbody> </table> <br> <div class="tag-list"> <a href="https://hamsterkraft.de/tags/#hardware">#hardware</a> &nbsp; <a href="https://hamsterkraft.de/tags/#OpenWRT">#OpenWRT</a> &nbsp; <a href="https://hamsterkraft.de/tags/#linux">#linux</a> &nbsp; <a href="https://hamsterkraft.de/tags/#mod">#mod</a> </div> </article> <div class="PageNavigation"> <a class="prev" href="https://hamsterkraft.de/hardware/2020/08/serial_console_cable.html">← Previous</a> </div> <aside class="related"> <h3>Related Posts</h3> <ul class="related-posts"> <li> <a href="https://hamsterkraft.de/hardware/2020/08/serial_console_cable.html"> DB9&lt;&gt;RJ45 serial console cable <small><time datetime="2020-08-23T00:00:00+02:00">August 23rd, 2020</time></small> </a> </li> <li> <a href="https://hamsterkraft.de/dyndns/2020/08/dyndns_v6.html"> dyndns IPv6 <small><time datetime="2020-08-21T00:00:00+02:00">August 21st, 2020</time></small> </a> </li> <li> <a href="https://hamsterkraft.de/ssl/dyndns/certbot/2020/08/certbot.html"> certbot <small><time datetime="2020-08-21T00:00:00+02:00">August 21st, 2020</time></small> </a> </li> </ul> </aside> </main> <footer class="footer"> <p><a href="https://hamsterkraft.de/" target="_blank" rel="noopener noreferrer">hamsterkraft</a> by psychowoife </p></footer> </div>  
+</body></html>
