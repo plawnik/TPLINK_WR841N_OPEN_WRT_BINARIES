@@ -4,6 +4,10 @@ Compiled binaries open wrt for modded TP-LINK WR841N v9 with 16MB flash
 ![Alt text](2.png?raw=true "Title")  
 ![Alt text](3.png?raw=true "Title")  
 
+
+# Important!
+All files for WR841N/ND hardware revision V9!
+
 # ART partitions
 Dumped ART partition from two routers
 
