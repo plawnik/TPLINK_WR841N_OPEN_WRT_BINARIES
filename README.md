@@ -20,7 +20,7 @@ Version of openwrt to write into flash by spi programmer with (file prepared onl
 Dump original tplinf firmware from my router (4MB flash)
 
 # tutorial webpage mirror
-Instruction how to modify router
+Instruction how to modify router -> https://hamsterkraft.de/hardware/2020/08/TP-Link_TL-WR841_RAM_ROM.html
 
 # Latest update for 02.05.2024...XX.bin
 The last compilation I made to update the router from the browser.
